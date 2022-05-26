@@ -87,14 +87,6 @@ HealthPoints operator+(int addition, const HealthPoints& hp1)
     return new_hp;
 }
 
-// "-" operator with HP object second (hp1 = 50 - hp1)
-HealthPoints operator-(int subtraction, const HealthPoints& hp1)
-{
-    HealthPoints new_hp = hp1;
-    new_hp -= subtraction;
-    return new_hp;
-}
-
 // "!=" operator (comparison = (hp1 != hp2);   comparison = (100 != hp1);   comparison = (hp1 != 100))
 bool operator!=(const HealthPoints& hp1, const HealthPoints& hp2)
 {

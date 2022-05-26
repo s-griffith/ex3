@@ -125,16 +125,6 @@ private:
 HealthPoints operator+(int addition, const HealthPoints& hp1);
 
 /*
-* "-" operator with HP object second (hp1 = 50 - hp1)
-*
-* @param subtraction - The integer value that needs to be subtracted
-* @param hp1 - the health point object that the "subtraction" needs to be subtracted from
-* @return
-*      A copy of the new health point object
-*/
-HealthPoints operator-(int subtraction, const HealthPoints& hp1);
-
-/*
 * "!=" operator (comparison = (hp1 != hp2);   comparison = (100 != hp1);   comparison = (hp1 != 100))
 *
 * @param hp1 - The first health point object
