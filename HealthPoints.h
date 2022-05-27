@@ -74,16 +74,6 @@ public:
     //------------------------------Friend Non-Member Functions-------------------------------
 
     /*
-    * "==" operator (comparison = (hp1 == hp2);   comparison = (100 == hp1);   comparison = (hp1 == 100))
-    *
-    * @param hp1 - The first health point object
-    * @param hp2 - The second health point object
-    * @return
-    *      true if the current health points of both objects are equal, otherwise false.
-    */
-    friend bool operator==(const HealthPoints& hp1, const HealthPoints& hp2);
-
-    /*
     * "<" operator between two HP objects (comparison = (hp1 < hp2))
     *
     * @param hp1 - The first health point object
@@ -125,6 +115,16 @@ private:
 HealthPoints operator+(int addition, const HealthPoints& hp1);
 
 /*
+* "==" operator (comparison = (hp1 == hp2);   comparison = (100 == hp1);   comparison = (hp1 == 100))
+*
+* @param hp1 - The first health point object
+* @param hp2 - The second health point object
+* @return
+*      true if the current health points of both objects are equal, otherwise false.
+*/
+bool operator==(const HealthPoints& hp1, const HealthPoints& hp2);
+
+/*
 * "!=" operator (comparison = (hp1 != hp2);   comparison = (100 != hp1);   comparison = (hp1 != 100))
 *
 * @param hp1 - The first health point object
@@ -163,7 +163,6 @@ bool operator>(const HealthPoints& hp1, const HealthPoints& hp2);
 *      true if the current health points of the first object is bigger than or equal to the second, otherwise false.
 */
 bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2);
-
 
 //--------------------------------Class Invalid Argument---------------------------------
 

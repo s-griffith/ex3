@@ -58,12 +58,6 @@ HealthPoints HealthPoints::operator-(int subtraction) const
 
 //------------------------------Friend Non-Member Functions-------------------------------
 
-// "==" operator (comparison = (hp1 == hp2);   comparison = (100 == hp1);   comparison = (hp1 == 100))
-bool operator==(const HealthPoints& hp1, const HealthPoints& hp2)
-{
-    return (hp1.m_hp == hp2.m_hp);
-}
-
 // "<" operator between two HP objects (comparison = (hp1 < hp2))
 bool operator<(const HealthPoints& hp1, const HealthPoints& hp2) //what about max_hp?
 {
@@ -85,6 +79,12 @@ HealthPoints operator+(int addition, const HealthPoints& hp1)
     HealthPoints new_hp = hp1;
     new_hp += addition;
     return new_hp;
+}
+
+// "==" operator (comparison = (hp1 == hp2);   comparison = (100 == hp1);   comparison = (hp1 == 100))
+bool operator==(const HealthPoints& hp1, const HealthPoints& hp2)
+{
+    return !((hp1 < hp2) || (hp2 < hp1));
 }
 
 // "!=" operator (comparison = (hp1 != hp2);   comparison = (100 != hp1);   comparison = (hp1 != 100))
