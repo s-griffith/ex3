@@ -53,13 +53,8 @@ public:
     T& front();
     void popFront();
     int size() const;
-<<<<<<< HEAD
-=======
-
->>>>>>> 4fe93221b931637310d692b90ca59a17757456a7
 private:
     Node m_node;
-
 };
 
 
