@@ -46,11 +46,10 @@ public:
     Queue(const Queue& original);
     //Assignment operator
     Queue& operator=(const Queue& original);
-    //Constructors for const queue
 
     //Method Functions:
     void pushBack(const T& data);
-    T& front();
+    T& front() const;
     void popFront();
     int size() const;
 private:
@@ -114,7 +113,7 @@ void Queue<T>::pushBack(const T& data)
 }
 
 template <class T>
-T& Queue<T>::front()
+T& Queue<T>::front() const
 {
     if (!m_node.m_data) {
         throw Queue<T>::EmptyQueue;
@@ -246,7 +245,7 @@ template <class T>
 class Queue<T>::Iterator {
 public:
     Iterator(const Iterator&) = default;
-    Iterator& operator=(const Interator&) = default;
+    Iterator& operator=(const Iterator&) = default;
 
     //The minimal operators needed for defining an iterator:
     const T& operator*() const;
