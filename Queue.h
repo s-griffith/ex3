@@ -6,6 +6,9 @@
 
 typedef int T; //Delete after debugging!
 
+//Left to figure out: Iterator(nullptr), returning newQueue from filter function, setting m_data equal to NULL throughout functions
+//Also: operator ++ for constIterator
+
 /*
  *  Queue:
  *  This is a template class that can be used for managing decks of cards, the turns of players, and more.
@@ -122,11 +125,11 @@ typename Queue<T>::Queue& Queue<T>::operator=(const Queue& original)
 template <class T>
 void Queue<T>::pushBack(const T& data)
 {
-    if (m_node->m_data == NULL) {
+    if (!(m_node->m_data) && m_node->m_next == nullptr) {
         m_node->m_data = data;
     }
     else {
-        Queue nodeNew; //= nodeNew.Node::newNode();
+        Queue nodeNew;
         nodeNew.m_node->m_data = data;
         m_node->m_next = nodeNew.m_node; //maybe need: *nodeNew;
     }
@@ -138,7 +141,7 @@ T& Queue<T>::front()
     if (!m_node->m_data) {
         throw Queue<T>::EmptyQueue();
     }
-    return m_node->m_data; //tried to return reference to the data
+    return m_node->m_data;
 }
 
 template <class T>
@@ -147,7 +150,7 @@ const T& Queue<T>::front() const
     if (!m_node->m_data) {
         throw Queue<T>::EmptyQueue();
     }
-    return m_node->m_data; //tried to return reference to the data
+    return m_node->m_data;
 }
 
 template <class T>
@@ -243,7 +246,7 @@ typename Queue<T>::ConstIterator Queue<T>::end() const
 
 //Copy given queue's elements to new queue if they fit the given condition
 template <class Condition>
-Queue<T>& filter(const Queue<T> current, const Condition c) {
+Queue<T>& filter(const Queue<T> current, const Condition c){
     if (!(current.Queue<T>::front())) {
         throw Queue<T>::EmptyQueue();
     }
@@ -418,7 +421,7 @@ typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++()
     if (!m_queue->m_node->m_next) {
         return ConstIterator(nullptr);
     }
-    m_queue->m_node = m_queue->m_node->m_next;
+    m_queue->m_node = m_queue->m_node->m_next; //Doesn't allow this because we are changing m_node, which is const
     return *this;
 }
 
