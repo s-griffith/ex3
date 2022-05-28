@@ -21,10 +21,18 @@ public:
      * This class is used in calculations and functions throughout the Queue class.
     */
     class Iterator;
-
-    //Iterator Methods Included:
+    //Iterator methods included:
     Iterator begin() const;
     Iterator end() const;
+
+    /*
+    * Queue::ConstIterator
+    * This class is used in calculations and functions throughout the Queue class.
+    */
+    class ConstIterator;
+    //Const iterator methods included:
+    ConstIterator begin() const;
+    ConstIterator end() const;
 
     /*
      * Queue::EmptyQueue
@@ -46,10 +54,11 @@ public:
     Queue(const Queue& original);
     //Assignment operator
     Queue& operator=(const Queue& original);
+    //Constructors for const queue
 
     //Method Functions:
     void pushBack(const T& data);
-    T& front() const;
+    T& front();
     void popFront();
     int size() const;
 private:
@@ -113,7 +122,7 @@ void Queue<T>::pushBack(const T& data)
 }
 
 template <class T>
-T& Queue<T>::front() const
+T& Queue<T>::front()
 {
     if (!m_node.m_data) {
         throw Queue<T>::EmptyQueue;
@@ -166,18 +175,35 @@ typename Queue<T>::Iterator Queue<T>::begin() const
     return Iterator(this);
 }
 
-//Returns the after last node in the linked list - fix!
+//Returns the after last node in the linked list
 template <class T>
 typename Queue<T>::Iterator Queue<T>::end() const
 {
     return Iterator(nullptr);
 }
 
+//Support for const objects: returns the first node in the linked list
+template <class T>
+typename Queue<T>::ConstIterator Queue<T>::begin() const
+{
+    if (!m_queue.m_data) {
+        return ConstIterator(nullptr);
+    }
+    return ConstIterator(this);
+}
+
+//Support for const objects: returns the after last node in the linked list
+template <class T>
+typename Queue<T>::ConstIterator Queue<T>::end() const
+{
+    return ConstIterator(nullptr);
+}
+
 //Copy given queue's elements to new queue if they fit the given condition
 template <class Condition>
 Queue<T>& filter(const Queue<T> current, const Condition c) {
     if ((!current) || (!c)) {
-        throw EmptyQueue();
+        throw Queue<T>::EmptyQueue();
     }
     Queue<T> newQueue = Queue();
     for (const T& elem : current) {
@@ -192,7 +218,7 @@ Queue<T>& filter(const Queue<T> current, const Condition c) {
 template <class Condition>
 void transform(Queue<T> current, const Condition c) {
     if ((!current) || (!c)) {
-        throw EmptyQueue();
+        throw Queue<T>::EmptyQueue();
     }
     for (T& elem : current) {
         c(elem);
@@ -239,13 +265,13 @@ void Queue<T>::Node::destroyNode(Node node)
 }
 
 //--------------------------------Iterator Class---------------------------------
-//Left to add: const version of the class?
 
 template <class T>
 class Queue<T>::Iterator {
 public:
     Iterator(const Iterator&) = default;
-    Iterator& operator=(const Iterator&) = default;
+    Iterator& operator=(const Interator&) = default;
+    ~Iterator() = default;
 
     //The minimal operators needed for defining an iterator:
     const T& operator*() const;
@@ -314,5 +340,80 @@ bool Queue<T>::Iterator::operator!=(const Iterator& i) const
     return (m_queue.m_data != i.m_queue.m_data);
 }
 
+//--------------------------------ConstIterator Class---------------------------------
+
+template <class T>
+class Queue<T>::ConstIterator {
+public:
+    ConstIterator(const ConstIterator&) = default;
+    ConstIterator& operator=(const ConstInterator&) = default;
+    ~ConstIterator() = default;
+
+    //The minimal operators needed for defining an iterator:
+    const T& operator*() const;
+    ConstIterator& operator++();
+    ConstIterator operator++(T);
+    bool operator!=(const ConstIterator& i) const;
+    //Should this be public or private?
+    class InvalidOperation {};
+
+private:
+    const Queue* m_queue;
+    ConstIterator(const Queue* queue);
+    friend class Queue;
+};
+
+template <class T>
+Queue<T>::ConstIterator::ConstIterator(const Queue<T>* queue) :
+        m_queue(queue)
+{}
+
+template <class T>
+const T& Queue<T>::ConstIterator::operator*() const
+{
+    if (!m_queue.m_data) {
+        throw EmptyQueue();
+    }
+    return m_queue.m_data;
+}
+
+template <class T>
+typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++()
+{
+    if (!m_queue.m_data) {
+        throw InvalidOperation()&;
+    }
+    if (m_queue.m_next) {
+        return ConstIterator(nullptr);
+    }
+    m_queue = m_queue.m_next;
+    return *this;
+}
+
+template <class T>
+typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(T)
+{
+    ConstIterator current = *this;
+    if (!m_queue.m_data) {
+        throw InvalidOperation()&;
+    }
+    if (m_queue.m_next) {
+        return ConstIterator(nullptr);
+    }
+    m_queue = m_queue.m_next;
+    return current;
+}
+
+template <class T>
+bool Queue<T>::ConstIterator::operator!=(const ConstIterator& i) const
+{
+    if (!(*this) && !i) {
+        return false;
+    }
+    if (!(*this) || !i) {
+        return true;
+    }
+    return (m_queue.m_data != i.m_queue.m_data);
+}
 
 #endif //EX3_QUEUE_H
