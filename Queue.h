@@ -47,12 +47,12 @@ public:
 
     //Method Functions:
     void pushBack(T data);
-    T front();
+    T& front();
     void popFront();
-    int size();
+    int size() const;
     //Filter & Transform Functions
 private:
-    Node m_node;
+    Node* m_node;
 
 };
 
@@ -62,10 +62,7 @@ private:
 template <class T>
 Queue<T>::Queue()
 {
-    Node *newNode = new Node;
-    Node.m_data = NULL;
-    Node.m_next = NULL;
-    *this = newNode;
+    m_node = Queue<T>::Node::newNode();
 }
 
 //Destructor, etc.
@@ -76,35 +73,59 @@ void Queue<T>::pushBack(T data)
         Node.m_data = data;
     }
     else {
-        Queue* node = new Node;
-        node.Node.m_data = data;
-        m_next = node;
-        //Move pointer over so that the last one points to the new one added now.
+        Node* newNode = new Node;
+        m_node->next = newNode;
     }
 }
 
-//Returns the size of the list
 template <class T>
-int size()
+T& Queue<T>::front()
 {
-    typename Queue<T>::Iterator current = this.begin();
-    int counter = 0;
-    while (this.begin.m_data != NULL) {
-        counter++;
-        begin++;
-    }
+    return *m_node;
 }
 
+template <class T>
+void  Queue<T>::popFront()
+{
+    Queue* current = &m_node;
+    if (m_node->m_next != NULL) {
+        m_node = m_node->m_next;
+    }
+
+}
+
+//Returns the size of the linked list
+template <class T>
+int size() const
+{
+    Iterator current = Iterator(this);
+    int counter = 0;
+    if (current->m_queue->m_data != NULL) {
+        counter++;
+        while (current->m_queue->m_next != NULL) {
+            counter++;
+            current++;
+        }
+    }
+    return counter;
+}
+
+//Returns the first node in the linked list
 template <class T>
 typename Queue<T>::Iterator Queue<T>::begin() const
 {
-    return Iterator(this, 0);
+    return Iterator(this);
 }
 
+//Returns the last node in the linked list
 template <class T>
 typename Queue<T>::Iterator Queue<T>::end() const
 {
-    return Iterator(this, this.size());
+    Iterator current = Iterator(this);
+    while (m_queue->m_next != NULL) {
+        current = m_queue->node->m_next;
+    }
+    return current;
 }
 
 //--------------------------------Node Class---------------------------------
@@ -112,7 +133,7 @@ typename Queue<T>::Iterator Queue<T>::end() const
 template <class T> class Node {
     T m_data;
     Node* m_next;
-    
+
 };
 
 //--------------------------------Iterator Class---------------------------------
@@ -133,7 +154,7 @@ public:
     class InvalidOperation {};
 
 private:
-    Queue* m_queue;
+    const Queue* m_queue;
     Iterator(const Queue* queue);
     friend class Queue;
 };
@@ -147,31 +168,31 @@ template <class T>
 const T& Queue<T>::Iterator::operator*() const
 {
     Queue* current = m_queue;
-    if (!current.Node.m_data) {
+    if (!current->node->m_data) {
         throw EmptyQueue();
     }
-    return current.Node.m_data;
+    return current->node->m_data;
 }
 
 template <class T>
 typename Queue<T>::Iterator& Queue<T>::Iterator::operator++()
 {
-    Iterator& current = *this;
     if (!m_queue.Node.m_next) {
         throw InvalidOperation()&;
     }
-    m_queue = m_queue.Node.m_next;
-    return current;
+    m_queue = m_queue->node->m_next;
+    return *this;
 }
 
 template <class T>
 typename Queue<T>::Iterator& Queue<T>::Iterator::operator++(T)
 {
+    Iterator& current = *this;
     if (!m_queue.Node.m_next) {
         throw InvalidOperation()&;
     }
-    m_queue = m_queue.Node.m_next;
-    return *this;
+    m_queue = m_queue->node->m_next;
+    return current;
 }
 
 template <class T>
