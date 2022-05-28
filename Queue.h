@@ -68,6 +68,7 @@ public:
     //Method Functions:
     void pushBack(const T& data);
     T& front(); //const didn't work
+    T& front() const;
     void popFront();
     int size() const;
 private:
@@ -132,6 +133,15 @@ void Queue<T>::pushBack(const T& data)
 
 template <class T>
 T& Queue<T>::front()
+{
+    if (!m_node.m_data) {
+        throw Queue<T>::EmptyQueue();
+    }
+    return m_node.m_data; //tried to return reference to the data
+}
+
+template <class T>
+T& Queue<T>::front() const
 {
     if (!m_node.m_data) {
         throw Queue<T>::EmptyQueue();
@@ -211,7 +221,7 @@ typename Queue<T>::ConstIterator Queue<T>::end() const
 //Copy given queue's elements to new queue if they fit the given condition
 template <class Condition>
 Queue<T>& filter(const Queue<T> current, const Condition c) {
-    if (!(current.m_node.m_data) || (!c)) {
+    if (!(current.Queue<T>::front())) {
         throw Queue<T>::EmptyQueue();
     }
     Queue<T> newQueue;
@@ -275,7 +285,7 @@ void Queue<T>::Node::destroyNode(Node node)
     Node current = node; //do we need an assignment operator?
     while(!node.m_data) {
         current = node.m_next;
-        delete[] node;
+        delete[] &node;
         node = current;
     }
 }
