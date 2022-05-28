@@ -20,7 +20,7 @@ public:
      * Queue::Iterator
      * This class is used in calculations and functions throughout the Queue class.
     */
-    template <class T> class Iterator;
+    template <typename T> class Iterator;
 
     //Iterator Methods Included:
     Iterator& begin() const;
@@ -65,9 +65,8 @@ template <class T> Queue<T>::Queue()
 }
 
 //Destructor, etc.
-
-void pushBack(T data) {
-    if (this.Node.m_data == NULL) {
+template <class T> void Queue<T>::pushBack(T data) {
+    if (this&.Node.m_data == NULL) {
         Node.m_data = data;
     }
     else {
@@ -82,7 +81,8 @@ void pushBack(T data) {
 //--------------------------------Iterator Class---------------------------------
 //Left to add: begin and end functions, const version of the class?
 
-template <class T> class Queue<T>::Iterator {
+template <class T>
+template <typename T> class Queue::Iterator {
     //constructor(s)
 public:
     //The minimal operators needed for defining an iterator:
@@ -95,7 +95,7 @@ public:
 
 };
 
-const T& template <class T> class Queue<T>::Iterator::operator*() const {
+template <class T> const T& Queue<T>::Iterator::operator*() const {
     //Exception stuff
     try {
         //make sure not out of bounds or undefined somehow?
@@ -110,7 +110,7 @@ const T& template <class T> class Queue<T>::Iterator::operator*() const {
     return data;
 }
 
-Iterator& template <class T> class Queue<T>::Iterator::operator++() {
+template <class T> Iterator& Queue<T>::Iterator::operator++() {
     try {
         Iterator& next = Node.m_next;
         if (!next) {
@@ -137,7 +137,7 @@ Iterator& template <class T> class Queue<T>::Iterator::operator++(T) { //What sh
     return next;
 }
 
-bool template <class T> class Queue<T>::Iterator::operator!=(const Iterator& i) const {
+template <class T> bool Queue<T>::Iterator::operator!=(const Iterator& i) const {
     try {
         bool result = !(*this == i);
         if (!(*this) && !i) {
