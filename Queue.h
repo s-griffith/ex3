@@ -32,8 +32,6 @@ public:
     */
     class EmptyQueue {};
 
-//--------------------------------Queue Class---------------------------------
-    
     /*
      * Constructor of the Queue:
      *
@@ -47,11 +45,11 @@ public:
     //Constructor for const queue
 
     //Method Functions:
-    void pushBack(T data);
+    void pushBack(const T& data);
     T& front();
     void popFront();
     int size() const;
-    //Filter & Transform Functions
+
 private:
     Node m_node;
 
@@ -70,7 +68,7 @@ Queue<T>::Queue()
 
 
 template <class T>
-void Queue<T>::pushBack(T data)
+void Queue<T>::pushBack(const T& data)
 {
     if (m_node.m_data == NULL) {
         m_node.m_data = data;
@@ -141,6 +139,34 @@ template <class T>
 typename Queue<T>::Iterator Queue<T>::end() const
 {
     return Iterator(nullptr);
+}
+
+//Copy given queue's elements to new queue if they fit the given condition
+template <class T>
+template <class Condition>
+Queue<T>& filter(const Queue<T> current, const Condition c) {
+    if ((!current) || (!c)) {
+        throw EmptyQueue();
+    }
+    Queue<T> newQueue = Queue();
+    for (const T& elem : current) {
+        if (c(elem)) {
+            newQueue.pushBack(x);
+        }
+    }
+    return newQueue;
+}
+
+//Transform all the elements of the given queue according to the condition provided
+template <class T>
+template <class Condition>
+void transform(Queue<T> current, const Condition c) {
+    if ((!current) || (!c)) {
+        throw EmptyQueue();
+    }
+    for (T& elem : current) {
+        c(elem));
+    }
 }
 
 //--------------------------------Node Class---------------------------------
@@ -255,7 +281,7 @@ bool Queue<T>::Iterator::operator!=(const Iterator& i) const
     if (!(*this) || !i) {
         return true;
     }
-    return !(m_queue.m_data == i.m_queue.m_data);
+    return (m_queue.m_data != i.m_queue.m_data);
 }
 
 
