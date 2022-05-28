@@ -20,8 +20,8 @@ public:
      * Queue::Iterator
      * This class is used in calculations and functions throughout the Queue class.
     */
-    class Iterator;
-   // class Iterator;
+    template <class T> class Iterator;
+
     //Iterator Methods Included:
     Iterator& begin() const;
     Iterator& end() const;
@@ -58,15 +58,18 @@ public:
 //--------------------------------Queue: Method Functions & Constructors---------------------------------
 
 //Constructor
-template <class T> Queue<T>::Queue() 
+template <class T>
+Queue<T>::Queue()
 {
     Node.m_data = NULL;
     Node.m_next = NULL;
 }
 
 //Destructor, etc.
-template <class T> void Queue<T>::pushBack(T data) {
-    if (this&.Node.m_data == NULL) {
+template <class T>
+void pushBack(T data)
+{
+    if (this->Node.m_data == NULL) {
         Node.m_data = data;
     }
     else {
@@ -76,13 +79,39 @@ template <class T> void Queue<T>::pushBack(T data) {
     }
 }
 
+//Returns the size of the list
+template <class T>
+int size()
+{
+    typename Queue<T>::Iterator current = this.begin();
+    int counter = 0;
+    while (this.begin.m_data != NULL) {
+        counter++;
+        begin++;
+    }
+}
+
+template <class T>
+typename Queue<T>::Iterator Queue<T>::begin() const
+{
+    return Iterator(this, 0);
+}
+
+template <class T>
+typename Queue<T>::Iterator Queue<T>::end() const
+{
+    return Iterator(this, this.size());
+}
 
 //--------------------------------Iterator Class---------------------------------
 //Left to add: begin and end functions, const version of the class?
 
-template <class T> class Queue<T>::Iterator {
-    //constructor(s)
+template <class T>
+class Queue<T>::Iterator {
 public:
+    Iterator(const Iterator&) = default;
+    Iterator& operator=(const Interator&) = default;
+
     //The minimal operators needed for defining an iterator:
     const T& operator*() const;
     Iterator& operator++();
@@ -91,9 +120,22 @@ public:
     //Should this be public or private?
     class InvalidOperation {};
 
+private:
+    const Queue* queue;
+    int index;
+    Iterator(const Queue* queue, int index);
+    friend class Queue;
 };
 
-template <class T> const T& Queue<T>::Iterator::operator*() const {
+template <class T>
+Queue<T>::Iterator::Iterator(const Queue<T>* queue, int index) :
+    Queue(queue),
+    index(index)
+{}
+
+template <class T>
+const T& Queue<T>::Iterator::operator*() const
+{
     //Exception stuff
     try {
         //make sure not out of bounds or undefined somehow?
@@ -108,7 +150,9 @@ template <class T> const T& Queue<T>::Iterator::operator*() const {
     return data;
 }
 
-template <class T> Queue<T>::Iterator& Queue<T>::Iterator::operator++() {
+template <class T>
+Iterator& Queue<T>::Iterator::operator++()
+{
     try {
         Iterator& next = Node.m_next;
         if (!next) {
@@ -121,7 +165,8 @@ template <class T> Queue<T>::Iterator& Queue<T>::Iterator::operator++() {
     return next;
 }
 
-template <class T> Queue<T>::Iterator& Queue<T>::Iterator::operator++(T) { //What should the difference be between ++NUM and NUM++?
+template <class T>
+Iterator& Queue<T>::Iterator::operator++(T) { //What should the difference be between ++NUM and NUM++?
 //This is just copied from the other function for now.
     try {
         Iterator& next = Node.m_next;
@@ -135,7 +180,8 @@ template <class T> Queue<T>::Iterator& Queue<T>::Iterator::operator++(T) { //Wha
     return next;
 }
 
-template <class T> bool Queue<T>::Iterator::operator!=(const Iterator& i) const {
+template <class T>
+bool Queue<T>::Iterator::operator!=(const Iterator& i) const {
     try {
         bool result = !(*this == i);
         if (!(*this) && !i) {
