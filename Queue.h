@@ -71,6 +71,7 @@ public:
     const T& front() const;
     void popFront();
     int size() const;
+    int size();
 private:
     Node *m_node;
 };
@@ -175,6 +176,22 @@ void  Queue<T>::popFront()
 }
 
 //Returns the size of the linked list
+template <class T>
+int Queue<T>::size()
+{
+    Iterator current = this->begin();
+    int counter = 0;
+    if (!current.m_queue->m_node->m_data) {
+        counter++;
+        while (!current.m_queue->m_node->m_next) {
+            counter++;
+            current++;
+        }
+    }
+    return counter;
+}
+
+//Returns the size of the linked list - const version
 template <class T>
 int Queue<T>::size() const
 {
@@ -333,13 +350,13 @@ template <class T>
 typename Queue<T>::Iterator Queue<T>::Iterator::operator++(T)
 {
     Iterator current = *this;
-    if (!m_queue.m_data) {
+    if (!m_queue->m_node->m_data) {
         throw InvalidOperation();
     }
-    if (!m_queue.m_next) {
+    if (!m_queue->m_node->m_next) {
         return Iterator(nullptr);
     }
-    m_queue = m_queue->m_node.m_next;
+    m_queue->m_node = m_queue->m_node->m_next;
     return current;
 }
 
