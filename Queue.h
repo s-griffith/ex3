@@ -9,18 +9,17 @@ typedef int T; //Delete after debugging!
  *  Queue:
  *  This is a template class that can be used for managing decks of cards, the turns of players, and more.
 */
+
+
 template <class T>
 class Queue {
-    struct Node {
-        T m_data;
-        Node *m_next;
-    };
 public:
     /*
      * Queue::Iterator
      * This class is used in calculations and functions throughout the Queue class.
     */
-    template <class T> class Iterator;
+    class Iterator;
+    class Node;
 
     //Iterator Methods Included:
     Iterator& begin() const;
@@ -52,6 +51,8 @@ public:
     void popFront();
     int size();
     //Filter & Transform Functions
+private:
+    Node m_node;
 
 };
 
@@ -61,20 +62,23 @@ public:
 template <class T>
 Queue<T>::Queue()
 {
+    Node *newNode = new Node;
     Node.m_data = NULL;
     Node.m_next = NULL;
+    *this = newNode;
 }
 
 //Destructor, etc.
 template <class T>
-void pushBack(T data)
+void Queue<T>::pushBack(T data)
 {
-    if (this->Node.m_data == NULL) {
+    if (this&.Node.m_data == NULL) {
         Node.m_data = data;
     }
     else {
-        Queue node();
+        Queue* node = new Node;
         node.Node.m_data = data;
+        m_next = node;
         //Move pointer over so that the last one points to the new one added now.
     }
 }
@@ -103,6 +107,14 @@ typename Queue<T>::Iterator Queue<T>::end() const
     return Iterator(this, this.size());
 }
 
+//--------------------------------Node Class---------------------------------
+
+template <class T> class Node {
+    T m_data;
+    Node* m_next;
+    
+};
+
 //--------------------------------Iterator Class---------------------------------
 //Left to add: begin and end functions, const version of the class?
 
@@ -121,77 +133,54 @@ public:
     class InvalidOperation {};
 
 private:
-    const Queue* queue;
-    int index;
-    Iterator(const Queue* queue, int index);
+    Queue* m_queue;
+    Iterator(const Queue* queue);
     friend class Queue;
 };
 
 template <class T>
-Queue<T>::Iterator::Iterator(const Queue<T>* queue, int index) :
-    Queue(queue),
-    index(index)
+Queue<T>::Iterator::Iterator(const Queue<T>* queue) :
+    m_queue(queue)
 {}
 
 template <class T>
 const T& Queue<T>::Iterator::operator*() const
 {
-    //Exception stuff
-    try {
-        //make sure not out of bounds or undefined somehow?
-        const T& data = Node.m_data;
-        if (!data) {
-            throw EmptyQueue();
-        }
+    Queue* current = m_queue;
+    if (!current.Node.m_data) {
+        throw EmptyQueue();
     }
-    catch (Queue<T>::EmptyQueue& e) { //not recognized - why?
-        //what to do?
-    }
-    return data;
+    return current.Node.m_data;
 }
 
 template <class T>
-Iterator& Queue<T>::Iterator::operator++()
+typename Queue<T>::Iterator& Queue<T>::Iterator::operator++()
 {
-    try {
-        Iterator& next = Node.m_next;
-        if (!next) {
-            throw InvalidOperation()&;
-        }
+    Iterator& current = *this;
+    if (!m_queue.Node.m_next) {
+        throw InvalidOperation()&;
     }
-    catch (Queue<T>::Iterator::InvalidOperation& e) {
-        //what to do?
-    }
-    return next;
+    m_queue = m_queue.Node.m_next;
+    return current;
 }
 
 template <class T>
-Iterator& Queue<T>::Iterator::operator++(T) { //What should the difference be between ++NUM and NUM++?
-//This is just copied from the other function for now.
-    try {
-        Iterator& next = Node.m_next;
-        if (!next) {
-            throw InvalidOperation()&;
-        }
+typename Queue<T>::Iterator& Queue<T>::Iterator::operator++(T)
+{
+    if (!m_queue.Node.m_next) {
+        throw InvalidOperation()&;
     }
-    catch (Queue<T>::Iterator::InvalidOperation& e) {
-        //what to do?
-    }
-    return next;
+    m_queue = m_queue.Node.m_next;
+    return *this;
 }
 
 template <class T>
-bool Queue<T>::Iterator::operator!=(const Iterator& i) const {
-    try {
-        bool result = !(*this == i);
-        if (!(*this) && !i) {
-            throw InvalidOperation()&;
-        }
+bool Queue<T>::Iterator::operator!=(const Iterator& i) const
+{
+    if (!(*this) || !i) {
+        throw InvalidOperation()&;
     }
-    catch (Queue<T>::Iterator::InvalidOperation& e) {
-        //what to do?
-    }
-    return result;
+    return (m_queue.Node.m_data == i.Node.m_data);
 }
 
 
