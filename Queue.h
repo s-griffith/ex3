@@ -14,14 +14,14 @@ class Queue {
     struct Node {
         T m_data;
         Node *m_next;
-    }
+    };
 public:
     /*
      * Queue::Iterator
      * This class is used in calculations and functions throughout the Queue class.
     */
-    template <typename T> class Iterator;
-
+    class Iterator;
+   // class Iterator;
     //Iterator Methods Included:
     Iterator& begin() const;
     Iterator& end() const;
@@ -70,19 +70,17 @@ template <class T> void Queue<T>::pushBack(T data) {
         Node.m_data = data;
     }
     else {
-        Queue() node;
+        Queue node();
         node.Node.m_data = data;
         //Move pointer over so that the last one points to the new one added now.
     }
-
 }
 
 
 //--------------------------------Iterator Class---------------------------------
 //Left to add: begin and end functions, const version of the class?
 
-template <class T>
-template <typename T> class Queue::Iterator {
+template <class T> class Queue<T>::Iterator {
     //constructor(s)
 public:
     //The minimal operators needed for defining an iterator:
@@ -110,7 +108,7 @@ template <class T> const T& Queue<T>::Iterator::operator*() const {
     return data;
 }
 
-template <class T> Iterator& Queue<T>::Iterator::operator++() {
+template <class T> Queue<T>::Iterator& Queue<T>::Iterator::operator++() {
     try {
         Iterator& next = Node.m_next;
         if (!next) {
@@ -123,7 +121,7 @@ template <class T> Iterator& Queue<T>::Iterator::operator++() {
     return next;
 }
 
-Iterator& template <class T> class Queue<T>::Iterator::operator++(T) { //What should the difference be between ++NUM and NUM++?
+template <class T> Queue<T>::Iterator& Queue<T>::Iterator::operator++(T) { //What should the difference be between ++NUM and NUM++?
 //This is just copied from the other function for now.
     try {
         Iterator& next = Node.m_next;
