@@ -158,18 +158,10 @@ typename Queue<T>::Queue& Queue<T>::operator=(const Queue& original)
     if (this == &original) {
         return *this;
     }
-    Queue queueNew;
-    try {
-        for (const T& elem : original) {
-            queueNew.Queue<T>::pushBack(elem);
-        }
-    }
-    catch (...) {
-        queueNew.m_node->Node::destroyNode(queueNew.m_node);
-        throw;
-    }
-    m_node->Node::destroyNode(m_node);
-    m_node = queueNew.m_node;
+    Queue queueNew(original);
+    Node* tmp = queueNew.m_node;
+    queueNew.m_node = m_node;
+    m_node = tmp;
     return *this;
 }
 
