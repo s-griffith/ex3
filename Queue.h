@@ -165,11 +165,11 @@ typename Queue<T>::Queue& Queue<T>::operator=(const Queue& original)
         }
     }
     catch (...) {
-        queueNew->Node::destroyNode(queueNew);
+        queueNew.m_node->Node::destroyNode(queueNew.m_node);
         throw;
     }
     m_node->Node::destroyNode(m_node);
-    m_node = queueNew;
+    m_node = queueNew.m_node;
     return *this;
 }
 
@@ -177,9 +177,6 @@ typename Queue<T>::Queue& Queue<T>::operator=(const Queue& original)
 template <class T>
 void Queue<T>::pushBack(const T& data)
 {
-    if (!data) {
-        return;
-    }
     Queue<T>::Iterator endIt = this->end();
     endIt.m_currentNode->m_data = data;
     //Creating end empty node
@@ -237,7 +234,7 @@ int Queue<T>::size()
     int counter = 0;
     while (current.m_currentNode->m_next != nullptr) {
         counter++;
-        current++;
+        ++current;
     }
     return counter;
 }
@@ -246,11 +243,11 @@ int Queue<T>::size()
 template <class T>
 int Queue<T>::size() const
 {
-    Iterator current = this->begin();
+    ConstIterator current = this->begin();
     int counter = 0;
-    while (current->m_currentNode->m_next != nullptr) {
+    while (current.m_currentNode->m_next != nullptr) {
         counter++;
-        current++;
+        ++current;
     }
     return counter;
 }
@@ -260,7 +257,7 @@ template <class T>
 typename Queue<T>::Iterator Queue<T>::begin()
 {
     Iterator current = Iterator(m_node);
-    current++;
+    ++current;
     return current;
 }
 
@@ -273,7 +270,7 @@ typename Queue<T>::Iterator Queue<T>::end()
     }
     Iterator current = this->begin();
     while (current.m_currentNode->m_next != nullptr) {
-        current++;
+        ++current;
     }
     return current;
 }
@@ -283,7 +280,7 @@ template <class T>
 typename Queue<T>::ConstIterator Queue<T>::begin() const
 {
     ConstIterator current = ConstIterator(m_node);
-    current++;
+    ++current;
     return ConstIterator(current);
 }
 
@@ -296,7 +293,7 @@ typename Queue<T>::ConstIterator Queue<T>::end() const
     }
     ConstIterator current = this->begin();
     while (current.m_currentNode->m_next != nullptr) {
-        current++;
+        ++current;
     }
     return current;
 }
@@ -361,7 +358,7 @@ public:
     //The minimal operators needed for defining an iterator:
     T& operator*() const;
     Iterator& operator++();
-    Iterator operator++(T);
+   // Iterator operator++(T);
     bool operator!=(const Iterator& i) const;
     //Should this be public or private?
     class InvalidOperation {};
@@ -395,7 +392,7 @@ typename Queue<T>::Iterator& Queue<T>::Iterator::operator++()
     m_currentNode = m_currentNode->m_next;
     return *this;
 }
-
+/*
 template <class T>
 typename Queue<T>::Iterator Queue<T>::Iterator::operator++(T)
 {
@@ -406,7 +403,7 @@ typename Queue<T>::Iterator Queue<T>::Iterator::operator++(T)
     m_currentNode = m_currentNode->m_next;
     return current;
 }
-
+*/
 template <class T>
 bool Queue<T>::Iterator::operator!=(const Iterator& i) const
 {
@@ -425,7 +422,7 @@ public:
     //The minimal operators needed for defining an iterator:
     const T& operator*() const;
     ConstIterator& operator++();
-    ConstIterator operator++(T);
+    //ConstIterator operator++(T);
     bool operator!=(const ConstIterator& i) const;
     //Should this be public or private?
     class InvalidOperation {};
@@ -460,6 +457,7 @@ typename Queue<T>::ConstIterator& Queue<T>::ConstIterator::operator++()
     return *this;
 }
 
+/*
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(T)
 {
@@ -470,7 +468,7 @@ typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(T)
     m_currentNode = m_currentNode->m_next;
     return current;
 }
-
+*/
 template <class T>
 bool Queue<T>::ConstIterator::operator!=(const ConstIterator& i) const
 {

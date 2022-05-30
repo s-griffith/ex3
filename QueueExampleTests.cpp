@@ -21,8 +21,11 @@ bool testQueueMethods()
 	bool testResult = true;
 
 	Queue<int> queue1;
-	queue1.pushBack(1);
-	queue1.pushBack(2);
+    std::cout << "here" << std::endl;
+
+    queue1.pushBack(1);
+
+    queue1.pushBack(2);
 	int front1 = queue1.front();
 	AGREGATE_TEST_RESULT(testResult, front1 == 1);
 
