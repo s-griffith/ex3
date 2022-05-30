@@ -101,14 +101,14 @@ Queue<T>::Queue()
         delete nodeNew;
         throw std::bad_alloc();
     }
-    m_node->m_next = nodeNew; //maybe need: *nodeNew;
+    m_node->m_next = nodeNew;
 }
 
 //Destructor
 template <class T>
 Queue<T>::~Queue() 
 {
-    Node* current; //do we need an assignment operator?
+    Node* current;
     while (m_node != nullptr) {
         current = m_node->m_next;
         delete m_node;
@@ -138,7 +138,7 @@ Queue<T>::Queue(const Queue& original)
         delete nodeNew;
         throw std::bad_alloc();
     }
-    m_node->m_next = nodeNew; //maybe need: *nodeNew;
+    m_node->m_next = nodeNew;
     try {
         for (const T& elem : original) {
             this->Queue<T>::pushBack(elem);
@@ -303,7 +303,7 @@ Queue<T> filter(const Queue<T>& current, const Condition c)
             newQueue.pushBack(elem);
         }
     }
-    return newQueue; //cannot return a reference to a local variable, because destructor is called at end of block
+    return newQueue;
 }
 
 //Transform all the elements of the given queue according to the condition provided
@@ -312,7 +312,7 @@ void transform(Queue<T>& current, const Condition c) {
     if (!(current.begin() != current.end())) {
         throw typename Queue<T>::EmptyQueue();
     }
-    for (T& elem : current){//T &elem : current) {
+    for (T& elem : current) {
         c(elem);
     }
 }
@@ -330,7 +330,7 @@ Queue<T>::Node::Node()
 template <class T>
 void Queue<T>::Node::destroyNode(Node* node) 
 {
-    Node* current = node; //do we need an assignment operator?
+    Node* current = node;
     while (node != nullptr) {
         current = node->m_next;
         delete node;
@@ -352,7 +352,6 @@ public:
     Iterator& operator++();
    // Iterator operator++(T);
     bool operator!=(const Iterator& i) const;
-    //Should this be public or private?
     class InvalidOperation {};
 
 private:
@@ -416,7 +415,6 @@ public:
     ConstIterator& operator++();
     //ConstIterator operator++(T);
     bool operator!=(const ConstIterator& i) const;
-    //Should this be public or private?
     class InvalidOperation {};
 
 private:
@@ -461,6 +459,7 @@ typename Queue<T>::ConstIterator Queue<T>::ConstIterator::operator++(T)
     return current;
 }
 */
+
 template <class T>
 bool Queue<T>::ConstIterator::operator!=(const ConstIterator& i) const
 {
