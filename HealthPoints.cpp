@@ -4,7 +4,7 @@
 HealthPoints::HealthPoints(int hpoints /* =DEFAULT_HP */)
 {
     if (hpoints <= 0) {
-        throw InvalidArgument(hpoints);
+        throw InvalidArgument();
     }
     m_hp = hpoints;
     m_maxHP = hpoints;

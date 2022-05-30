@@ -94,7 +94,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const HealthPoints& hp1);
 
     //Include the class if invalid arguments were entered to the constructor
-    class InvalidArgument;
+    class InvalidArgument {};
 
 private:
     //Current number of health points and the maximum number possible
@@ -163,26 +163,5 @@ bool operator>(const HealthPoints& hp1, const HealthPoints& hp2);
 *      true if the current health points of the first object is bigger than or equal to the second, otherwise false.
 */
 bool operator>=(const HealthPoints& hp1, const HealthPoints& hp2);
-
-//--------------------------------Class Invalid Argument---------------------------------
-
-/*
- *  HealthPoints::InvalidArgument
- *  This class is used for the errors thrown as a result of invalid arguments
-*/
-class HealthPoints::InvalidArgument {
-public:
-
-    /*
-     * C'tor of InvalidArgument class
-     *
-     * @param argument - The invalid argument received by the HealthPoints constructor
-     * @return
-     *      A new instance of InvalidArgument.
-     */
-    InvalidArgument(int argument) : m_invalidArgument(argument) {}
-private:
-    int m_invalidArgument;
-};
 
 #endif //EX3_HEALTHPOINTS_H
