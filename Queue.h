@@ -83,9 +83,24 @@ template <class T>
 Queue<T>::Queue()
 {
     //Creating beginning empty node
-    m_node = new Node();
+    try {
+        m_node = new Node();
+    }
+    catch (const std::bad_alloc& e) {
+        delete[] m_node;
+        throw std::bad_alloc();
+    }
     //Creating end empty node
     Node *nodeNew = new Node();
+    try {
+        if (!nodeNew) {
+            throw std::bad_alloc();
+        }
+    }
+    catch (const std::bad_alloc& e) {
+        delete[] nodeNew;
+        throw std::bad_alloc();
+    }
     m_node->m_next = nodeNew; //maybe need: *nodeNew;
 }
 
@@ -105,8 +120,9 @@ Queue<T>::~Queue()
 template <class T>
 Queue<T>::Queue(const Queue& original)
 {
+    Queue m_node;
     for (const T& elem : original) {
-        this->Queue<T>::pushBack(elem); //need object to call it?
+        this->Queue<T>::pushBack(elem);
     }
 }
 
@@ -117,10 +133,18 @@ typename Queue<T>::Queue& Queue<T>::operator=(const Queue& original)
     if (this == &original) {
         return *this;
     }
-    m_node->Node::destroyNode(m_node);
-    for (const T& elem : original) {
-        this.Queue<T>::pushBack(elem);
+    Queue queueNew;
+    try {
+        for (const T& elem : original) {
+            queueNew.Queue<T>::pushBack(elem);
+        }
     }
+    catch (...) {
+        queueNew->Node::destroyNode(queueNew);
+        throw;
+    }
+    m_node->Node::destroyNode(m_node);
+    m_node = queueNew;
     return *this;
 }
 
@@ -130,7 +154,17 @@ void Queue<T>::pushBack(const T& data)
 {
     Queue<T>::Iterator endIt = this->end();
     endIt.m_currentNode->m_data = data;
+    //Creating end empty node
     Node *nodeNew = new Node();
+    try {
+        if (!nodeNew) {
+            throw std::bad_alloc();
+        }
+    }
+    catch (const std::bad_alloc& e) {
+        delete[] nodeNew;
+        throw std::bad_alloc();
+    }
     endIt.m_currentNode->m_next = nodeNew; //maybe need: *nodeNew;
 }
 
