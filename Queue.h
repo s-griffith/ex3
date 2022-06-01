@@ -2,6 +2,7 @@
 #define EX3_QUEUE_H
 
 #include <new>
+#include <iostream>
 
 /*
  *  Queue:
@@ -38,7 +39,8 @@ public:
     //Assignment operator
     Queue& operator=(const Queue& original);
 
-    //Method Functions:
+    //-------------------------------------Method Functions----------------------------------------
+
     /*
     * Add new member to the end of the queue
     *
@@ -46,37 +48,41 @@ public:
     * @return - void
     */
     void pushBack(const T& data);
+
     /*
     * Return the data of the first member of the queue
     *
     * @return - a reference to the data of the first member of the queue
     */
     T& front();
+
     /*
     * Return the data of the first member of a const instance of a queue
     *
     * @return - a const reference to the data of the first member of a const instance of a queue
     */
     const T& front() const;
+
     /*
     * Remove the first node of the queue
     *
     * @return - void
     */
     void popFront();
+
     /*
     * Calculate and return the size of a queue
     *
     * @return - the size of the queue
     */
     int size();
+
     /*
     * Calculate and return the size of a const instance of a queue
     *
     * @return - the size of the const queue
     */
     int size() const;
-
 
     /*
      * Queue::Iterator
@@ -282,7 +288,7 @@ int Queue<T>::size() const
     return counter;
 }
 
-//Returns a "pointer" to the first node in the queue
+//Returns an iterator to the first node in the queue
 template <class T>
 typename Queue<T>::Iterator Queue<T>::begin()
 {
@@ -291,7 +297,7 @@ typename Queue<T>::Iterator Queue<T>::begin()
     return current;
 }
 
-//Returns a "pointer" to the node after last node in the queue
+//Returns an iterator to the node after last node in the queue
 template <class T>
 typename Queue<T>::Iterator Queue<T>::end()
 {
@@ -305,7 +311,7 @@ typename Queue<T>::Iterator Queue<T>::end()
     return current;
 }
 
-//Returns a "pointer" to the first node in the const queue
+//Returns an iterator to the first node in the const queue
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::begin() const
 {
@@ -314,7 +320,7 @@ typename Queue<T>::ConstIterator Queue<T>::begin() const
     return ConstIterator(current);
 }
 
-//Returns a "pointer" to the node after last node in the const queue
+//Returns an iterator to the node after last node in the const queue
 template <class T>
 typename Queue<T>::ConstIterator Queue<T>::end() const
 {
@@ -404,18 +410,21 @@ public:
     ~Iterator() = default;
 
     //The minimal operators needed for defining an Iterator:
+
     /*
     * "*" operator on the node the Iterator "points" to
     *
     * @return - a reference to the data of the requested node
     */
     T& operator*() const;
+
     /*
     * "++" prefix operator on the Iterator
     *
     * @return - a reference to the Iterator that now points to the next node in the queue
     */
     Iterator& operator++();
+
     /*
     * "!=" operator between two Iterators
     *
