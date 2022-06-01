@@ -3,16 +3,12 @@
 
 #include <iostream>
 
-
-
-
 /*
  *  HealthPoints:
  *  This class represents the health points object belonging to a player in the game
 */
 class HealthPoints {
 public:
-
     //Constant value for the default maximum health points a player can receive
     static const int DEFAULT_HP = 100;
 
@@ -26,14 +22,13 @@ public:
     HealthPoints(int hpoints = DEFAULT_HP);
 
     /*
-     * Explicitly use the default methods for the copy constructor, destructor the assignment operator
+     * Explicitly use the default methods for the copy constructor, the assignment operator and the destructor
     */
     HealthPoints(const HealthPoints&) = default;
     HealthPoints& operator=(const HealthPoints& other) = default;
     ~HealthPoints() = default;
 
     //-----------------------------------Member Functions-------------------------------------
-
 
     /*
     * "+=" operator (hp1 += 50)
@@ -43,7 +38,6 @@ public:
     *      A reference to the current health point object
     */
     HealthPoints& operator+=(int addition);
-
     /*
     * "-=" operator (hp1 -= 50)
     *
@@ -52,7 +46,6 @@ public:
     *      A reference to the current health point object
     */
     HealthPoints& operator-=(int subtraction);
-
     /*
     * "+" operator with HP object first (hp1 = hp1 + 50)
     *
@@ -61,7 +54,6 @@ public:
     *      A copy of the new health point object
     */
     HealthPoints operator+(int addition) const;
-
     /*
     * "-" operator with HP object first (hp1 = hp1 - 50)
     *
@@ -82,7 +74,6 @@ public:
     *      true if the current health points of the first object is smaller than the second, otherwise false.
     */
     friend bool operator<(const HealthPoints& hp1, const HealthPoints& hp2);
-
     /*
     * Output stream operator in the format: "<currentHealthPoints>(<maximumHealthPoints>)"
     *
@@ -93,9 +84,10 @@ public:
     */
     friend std::ostream& operator<<(std::ostream& os, const HealthPoints& hp1);
 
+    //----------------------------------Exception Class---------------------------------------
+
     //Include the class if invalid arguments were entered to the constructor
     class InvalidArgument {};
-
 private:
     //Current number of health points and the maximum number possible
     int m_hp;

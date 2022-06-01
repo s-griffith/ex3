@@ -28,32 +28,24 @@ HealthPoints& HealthPoints::operator+=(int addition)
 // "-=" operator (hp1 -= 50)
 HealthPoints& HealthPoints::operator-=(int subtraction)
 {
-    if (m_hp - subtraction >= m_maxHP) {
-        m_hp = m_maxHP;
-    }
-    else if (m_hp - subtraction <= 0) {
-        m_hp = 0;
-    }
-    else {
-        m_hp -= subtraction;
-    }
+    *this += -(subtraction);
     return *this;
 }
 
 // "+" operator with HP object first (hp1 = hp1 + 50)
 HealthPoints HealthPoints::operator+(int addition) const
 {
-    HealthPoints new_hp(*this);
-    new_hp += addition;
-    return new_hp;
+    HealthPoints newHP(*this);
+    newHP += addition;
+    return newHP;
 }
 
 // "-" operator with HP object first (hp1 = hp1 - 50)
 HealthPoints HealthPoints::operator-(int subtraction) const
 {
-    HealthPoints new_hp(*this);
-    new_hp -= subtraction;
-    return new_hp;
+    HealthPoints newHP(*this);
+    newHP -= subtraction;
+    return newHP;
 }
 
 //------------------------------Friend Non-Member Functions-------------------------------
@@ -76,9 +68,9 @@ std::ostream& operator<<(std::ostream& os, const HealthPoints& hp1)
 // "+" operator with HP object second (hp1 = 50 + hp1)
 HealthPoints operator+(int addition, const HealthPoints& hp1)
 {
-    HealthPoints new_hp = hp1;
-    new_hp += addition;
-    return new_hp;
+    HealthPoints newHP = hp1;
+    newHP += addition;
+    return newHP;
 }
 
 // "==" operator (comparison = (hp1 == hp2);   comparison = (100 == hp1);   comparison = (hp1 == 100))
